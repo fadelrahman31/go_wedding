@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_wedding/page2.dart';
 import 'page1.dart';
+import 'registerwedding.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,7 +34,7 @@ class _BottomNavigationBarState extends State<MyHomePage> {
  Widget build(BuildContext context) {
    final _kTabPages = <Widget>[
      Center(
-       child: PageOne(),
+       child: HomePage(),
      ),
      Center(
        child: PageTwo(),
