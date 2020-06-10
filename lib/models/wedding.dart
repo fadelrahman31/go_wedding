@@ -5,7 +5,7 @@ class Wedding {
   String _owner;
   String _date;
   String _location;
-  DateTime _created_at;
+  String _created_at;
 
   Wedding(this._id, this._owner, this._date, this._location, this._created_at);
  
@@ -21,7 +21,7 @@ class Wedding {
   String get owner => _owner;
   String get date => _date;
   String get location => _location;
-  DateTime get createdat => _created_at;
+  String get createdat => _created_at;
  
   Wedding.fromSnapshot(DataSnapshot snapshot) {
     _id = snapshot.key;
@@ -29,5 +29,15 @@ class Wedding {
     _date = snapshot.value['date'];
     _location = snapshot.value['location'];
     _created_at = snapshot.value['crated_at'];
+  }
+
+  toJson() {
+    return {
+      "id": id,
+      "owner": owner,
+      "date": date,
+      "location": location,
+      "crated_at": createdat
+    };
   }
 }
