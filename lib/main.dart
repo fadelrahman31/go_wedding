@@ -5,73 +5,73 @@ import 'page1.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Everglow',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+ // This widget is the root of your application.
+ @override
+ Widget build(BuildContext context) {
+   return MaterialApp(
+     title: 'Everglow',
+     theme: ThemeData(
+       primarySwatch: Colors.blue,
+     ),
+     home: MyHomePage(title: 'Flutter Demo Home Page'),
+   );
+ }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key key, this.title}) : super(key: key);
+ const MyHomePage({Key key, this.title}) : super(key: key);
 
-  final String title;
+ final String title;
 
-  @override
-  State<StatefulWidget> createState() => _BottomNavigationBarState();
+ @override
+ State<StatefulWidget> createState() => _BottomNavigationBarState();
 }
 
 class _BottomNavigationBarState extends State<MyHomePage> {
-  int _currentTabIndex = 0;
+ int _currentTabIndex = 0;
 
-  Widget build(BuildContext context) {
-    final _kTabPages = <Widget>[
-      Center(
-        child: PageOne(),
-      ),
-      Center(
-        child: PageTwo(),
-      )
-    ];
+ Widget build(BuildContext context) {
+   final _kTabPages = <Widget>[
+     Center(
+       child: PageOne(),
+     ),
+     Center(
+       child: PageTwo(),
+     )
+   ];
 
-    final _kBottomNavbarItem = <BottomNavigationBarItem>[
-      BottomNavigationBarItem(
-          title: Text('Page 1'),
-          icon: Icon(Icons.apps)
-      ),
-      BottomNavigationBarItem(
-          title: Text('Page 2'),
-          icon: Icon(Icons.supervised_user_circle)
-      ),
-    ];
-    assert(_kTabPages.length == _kBottomNavbarItem.length);
-    final bottomNavBar = BottomNavigationBar(
-      items: _kBottomNavbarItem,
-      currentIndex: _currentTabIndex,
-      type: BottomNavigationBarType.fixed,
-      onTap: (int index){
-        setState(() {
-          _currentTabIndex = index;
-        });
-      },
-    );
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("EVERGLOW"),
-      ),
-      body: _kTabPages[_currentTabIndex],
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        child: bottomNavBar,
-      ),
-    );
-  }
+   final _kBottomNavbarItem = <BottomNavigationBarItem>[
+     BottomNavigationBarItem(
+         title: Text('Page 1'),
+         icon: Icon(Icons.apps)
+     ),
+     BottomNavigationBarItem(
+         title: Text('Page 2'),
+         icon: Icon(Icons.supervised_user_circle)
+     ),
+   ];
+   assert(_kTabPages.length == _kBottomNavbarItem.length);
+   final bottomNavBar = BottomNavigationBar(
+     items: _kBottomNavbarItem,
+     currentIndex: _currentTabIndex,
+     type: BottomNavigationBarType.fixed,
+     onTap: (int index){
+       setState(() {
+         _currentTabIndex = index;
+       });
+     },
+   );
+   return Scaffold(
+     appBar: AppBar(
+       title: Text("EVERGLOW"),
+     ),
+     body: _kTabPages[_currentTabIndex],
+     bottomNavigationBar: BottomAppBar(
+       shape: CircularNotchedRectangle(),
+       child: bottomNavBar,
+     ),
+   );
+ }
 }
 
 //class _MyHomePageState extends State<MyHomePage> {
