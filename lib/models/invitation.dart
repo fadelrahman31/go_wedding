@@ -30,4 +30,14 @@ class Invitation {
     _additional = snapshot.value['additional'];
     _qr_path = snapshot.value['qr_path'];
   }
+
+  toJson() {
+    return {
+      "id": id,
+      "id_wedding": idwedding,
+      "name": name,
+      "additional":additional,
+      "qr_path": qrpath
+    };
+  }
 }
