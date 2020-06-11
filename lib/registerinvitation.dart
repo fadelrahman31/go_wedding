@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:file_picker/file_picker.dart';
 import 'models/invitation.dart';
-import 'pickfile.dart';
+import 'dart:async';
+import 'dart:io';
 
 class RegisterInvitation extends StatefulWidget {
   RegisterInvitation({Key key}) : super(key: key);
@@ -19,6 +22,7 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
   bool _loadingPath = false;
   String _filePath;
   String _fileName;
+  String _content;
 
   @override
   void initState(){
@@ -44,14 +48,26 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
     });
     print(_fileName);
     print(_filePath);
+    _content = await _read();
+    print(_content);
+    print(_content.runtimeType);
   }
 
+  void _parseData(String content){
+    var data = json.decode(content);
+    var tamu = data["tamu"] as List;
+  }
 
-
-
-
-
-
+  Future<String> _read() async {
+    String text;
+    try{
+      final File file = File(_filePath.toString());
+      text = await file.readAsString();
+    }catch (e){
+      print("couldn't read file");
+    }
+    return text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +93,6 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
           child: Text("Import Invited Guest JSON File"),
           color: Colors.green,
           onPressed: (){
-//            Navigator.of(context).push(
-//              MaterialPageRoute(
-//                builder: (context){
-//                  return FilePickerDemo();
-//                }
-//              )
-//            );
             _openFileExplorer();
           },
         )
