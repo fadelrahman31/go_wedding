@@ -34,7 +34,7 @@ class _BottomNavigationBarState extends State<MyHomePage> {
  Widget build(BuildContext context) {
    final _kTabPages = <Widget>[
      Center(
-       child: HomePage(),
+       child: WeddingPage(),
      ),
      Center(
        child: PageTwo(),
