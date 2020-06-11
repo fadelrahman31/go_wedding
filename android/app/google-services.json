@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "563882670696",
+    "firebase_url": "https://everglow-4e679.firebaseio.com",
+    "project_id": "everglow-4e679",
+    "storage_bucket": "everglow-4e679.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563882670696:android:9b8de3e7aabc1b5c52d9dd",
+        "android_client_info": {
+          "package_name": "com.example.go_wedding"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563882670696-tps56ejk7ut9pskbqeh352tae175otn9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.go_wedding",
+            "certificate_hash": "7bade9ebc28e526e20f5ed9781ae1fdaf07983d9"
+          }
+        },
+        {
+          "client_id": "563882670696-t4376cn35652umqafnigdd6eh38o5l7e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.go_wedding",
+            "certificate_hash": "415ae605eb1e5236f9af391cfe0f69979b8af9b8"
+          }
+        },
+        {
+          "client_id": "563882670696-eutor5j5e3r6icmbr6ptrgdlg5q1p765.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5DD8pnHZNr92Gm6-jCbS4P73kYXVpgF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "563882670696-eutor5j5e3r6icmbr6ptrgdlg5q1p765.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
