@@ -18,21 +18,68 @@ class RegisterInvitation extends StatefulWidget {
 class _RegisterInvitationState extends State<RegisterInvitation> {
   List<Invitation> _invitationList;
   final FirebaseDatabase _database = FirebaseDatabase.instance;
+
   Query _invitationQuery;
   bool _loadingPath = false;
   String _filePath;
   String _fileName;
   String _content;
+  List<String> _daftarTamu = new List<String>();
+
+  StreamSubscription<Event> _onInvitationAddedSubscription;
+  StreamSubscription<Event> _onInvitationChangedSubscription;
+
 
   @override
   void initState(){
     super.initState();
     _invitationList = new List();
-    _invitationQuery = _database.reference().child("Invitations");
+    _invitationQuery = _database
+        .reference()
+        .child("Invitations");
+    _onInvitationAddedSubscription = _invitationQuery.onChildAdded.listen(onEntryAdded);
+    _onInvitationChangedSubscription = _invitationQuery.onChildChanged.listen(onEntryChanged);
   }
 
+  @override
+  void dispose() {
+    _onInvitationAddedSubscription.cancel();
+    _onInvitationChangedSubscription.cancel();
+    super.dispose();
+  }
 
-  void _openFileExplorer() async {
+  onEntryAdded(Event event) {
+    setState(() {
+      _invitationList.add(Invitation.fromSnapshot(event.snapshot));
+    });
+  }
+
+  onEntryChanged(Event event){
+    var oldEntry = _invitationList.singleWhere((entry) {
+      return entry.id == event.snapshot.key;
+    });
+
+    setState(() {
+      _invitationList[_invitationList.indexOf(oldEntry)] = Invitation.fromSnapshot(event.snapshot);
+    });
+  }
+
+  addNewInvitation(String namaTamu){
+    Invitation invitation = new Invitation("wedding01", namaTamu, "~otw", "link-to-qr");
+    _database.reference().child("Invitations").push().set(invitation.toJson());
+  }
+
+  deleteInvitation(String id, int index) {
+    _database.reference().child("Invitations").child(id).remove().then((_) {
+      print("Delete $id successful");
+      setState(() {
+        _invitationList.removeAt(index);
+      });
+    });
+  }
+
+  //Function to handle the click explore file button --> until the "tamu" data is parsed.
+  void openFileExplorer() async {
     setState(() {
       _loadingPath = true;
     });
@@ -48,17 +95,27 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
     });
     print(_fileName);
     print(_filePath);
-    _content = await _read();
-    print(_content);
-    print(_content.runtimeType);
+    _content = await read();
+    parseData(_content);
   }
 
-  void _parseData(String content){
+  void parseData(String content){
     var data = json.decode(content);
     var tamu = data["tamu"] as List;
+    print(tamu.runtimeType);
+    print(tamu);
+    for(var i=0; i < tamu.length; i++){
+      _daftarTamu.add(tamu[i]["nama"].toString());
+    }
+    print(_daftarTamu.runtimeType);
+    //print(_daftarTamu);
+    for(var j=0; j<_daftarTamu.length;j++){
+      print("iterasi " + j.toString() + " " + _daftarTamu[j] + "\n");
+      addNewInvitation(_daftarTamu[j]);
+    }
   }
 
-  Future<String> _read() async {
+  Future<String> read() async {
     String text;
     try{
       final File file = File(_filePath.toString());
@@ -68,6 +125,39 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
     }
     return text;
   }
+
+  Widget showInvitationList() {
+    if (_invitationList.length > 0) {
+      return ListView.builder(
+          shrinkWrap: true,
+          itemCount: _invitationList.length,
+          itemBuilder: (BuildContext context, int index) {
+              String id = _invitationList[index].id;
+              String name = _invitationList[index].name;
+            return Dismissible(
+              key: Key(id),
+              background: Container(color: Colors.red),
+              onDismissed: (direction) async {
+                deleteInvitation(id, index);
+              },
+              child: ListTile(
+                title: Text(
+                  name ?? 'default value' ,
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ),
+            );
+          });
+    } else {
+      return Center(
+          child: Text(
+            "Welcome. Your list is empty",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30.0),
+          ));
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +180,14 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
         ),
         Divider(),
         RaisedButton(
-          child: Text("Import Invited Guest JSON File"),
+          child: Text("Import Invited Guest JSON File", style: TextStyle(color: Colors.white),),
           color: Colors.green,
           onPressed: (){
-            _openFileExplorer();
+            openFileExplorer();
           },
-        )
+        ),
+        Divider(),
+        showInvitationList()
       ],
     );
   }
