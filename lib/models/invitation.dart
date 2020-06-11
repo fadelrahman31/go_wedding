@@ -7,10 +7,10 @@ class Invitation {
   String _additional;
   String _qr_path;
 
-  Invitation(this._id, this._id_wedding, this._name, this._additional, this._qr_path);
+  Invitation(this._id_wedding, this._name, this._additional, this._qr_path);
  
   Invitation.map(dynamic obj) {
-    this._id = obj['id'];
+    //this._id = obj['id'];
     this._id_wedding = obj['id_wedding'];
     this._name = obj['name'];
     this._additional = obj['additional'];
@@ -29,5 +29,15 @@ class Invitation {
     _name = snapshot.value['name'];
     _additional = snapshot.value['additional'];
     _qr_path = snapshot.value['qr_path'];
+  }
+
+  toJson() {
+    return {
+      "id": id,
+      "id_wedding": idwedding,
+      "name": name,
+      "additional":additional,
+      "qr_path": qrpath
+    };
   }
 }
