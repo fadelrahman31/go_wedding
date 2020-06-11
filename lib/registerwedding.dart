@@ -18,7 +18,10 @@ class _WeddingPageState extends State<WeddingPage> {
   final FirebaseDatabase _database = FirebaseDatabase.instance;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final _textEditingController = TextEditingController();
+  final _dateInputController = TextEditingController();
+  final _locationInputController = TextEditingController();
+  final _ownerInputController = TextEditingController();
+  final _hourInputController = TextEditingController();
   StreamSubscription<Event> _onWeddingAddedSubscription;
   StreamSubscription<Event> _onWeddingChangedSubscription;
 
@@ -62,8 +65,8 @@ class _WeddingPageState extends State<WeddingPage> {
     });
   }
 
-  addNewwedding(String id, String owner, String date, String location, String created_at) {
-    Wedding wedding = new Wedding(id, owner, date, location, created_at);
+  addNewwedding(String owner, String date, String hour, String location) {
+    Wedding wedding = new Wedding(owner, date, hour, location, DateTime.now().toString());
     _database.reference().child("Weddings").push().set(wedding.toJson());
   }
 
@@ -76,20 +79,47 @@ class _WeddingPageState extends State<WeddingPage> {
     });
   }
 
-  showAddweddingDialog(BuildContext context) async {
-    _textEditingController.clear();
+showAddweddingDialog(BuildContext context) async {
+    _dateInputController.clear();
+    _hourInputController.clear();
+    _locationInputController.clear();
+    _ownerInputController.clear();
     await showDialog<String>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: new Row(
+            content: new Column(
               children: <Widget>[
                 new Expanded(
                     child: new TextField(
-                  controller: _textEditingController,
+                  controller: _ownerInputController,
                   autofocus: true,
                   decoration: new InputDecoration(
-                    labelText: 'Add new wedding',
+                    labelText: 'Wedding Title / Owner',
+                  ),
+                )),
+                new Expanded(
+                    child: new TextField(
+                  controller: _locationInputController,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    labelText: 'Lokasi Wedding',
+                  ),
+                )),
+                new Expanded(
+                    child: new TextField(
+                  controller: _dateInputController,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    labelText: 'Tanggal Pelaksanaan',
+                  ),
+                )),
+                new Expanded(
+                    child: new TextField(
+                  controller: _hourInputController,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    labelText: 'Waktu Pelaksanaan',
                   ),
                 ))
               ],
@@ -103,13 +133,74 @@ class _WeddingPageState extends State<WeddingPage> {
               new FlatButton(
                   child: const Text('Save'),
                   onPressed: () {
-                    addNewwedding("112345", "Vincent", "13/02/2020", "Bandung", "11/01/2020");
+                    addNewwedding(_ownerInputController.text.toString(), _locationInputController.text.toString(), _dateInputController.text.toString(), _hourInputController.text.toString());
                     Navigator.pop(context);
                   })
             ],
           );
         });
   }
+  // showAddweddingDialog(BuildContext context) async {
+  //   _dateInputController.clear();
+  //   _hourInputController.clear();
+  //   _locationInputController.clear();
+  //   _ownerInputController.clear();
+  //   await showDialog<String>(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return AlertDialog(
+  //           content: new Row(
+  //             children: <Widget>[
+  //               new Expanded(
+  //                   child: new TextField(
+  //                 controller: _ownerInputController,
+  //                 autofocus: true,
+  //                 decoration: new InputDecoration(
+  //                   labelText: 'Wedding Title / Owner',
+  //                 ),
+  //               )),
+  //               new Expanded(
+  //                   child: new TextField(
+  //                 controller: _locationInputController,
+  //                 autofocus: true,
+  //                 decoration: new InputDecoration(
+  //                   labelText: 'Lokasi Wedding',
+  //                 ),
+  //               )),
+  //               new Expanded(
+  //                   child: new TextField(
+  //                 controller: _dateInputController,
+  //                 autofocus: true,
+  //                 decoration: new InputDecoration(
+  //                   labelText: 'Tanggal Pelaksanaan',
+  //                 ),
+  //               )),
+  //               new Expanded(
+  //                   child: new TextField(
+  //                 controller: _hourInputController,
+  //                 autofocus: true,
+  //                 decoration: new InputDecoration(
+  //                   labelText: 'Waktu Pelaksanaan',
+  //                 ),
+  //               ))
+  //             ],
+  //           ),
+  //           actions: <Widget>[
+  //             new FlatButton(
+  //                 child: const Text('Cancel'),
+  //                 onPressed: () {
+  //                   Navigator.pop(context);
+  //                 }),
+  //             new FlatButton(
+  //                 child: const Text('Save'),
+  //                 onPressed: () {
+  //                   addNewwedding(_ownerInputController.text.toString(), _locationInputController.text.toString(), _dateInputController.text.toString(), _hourInputController.text.toString());
+  //                   Navigator.pop(context);
+  //                 })
+  //           ],
+  //         );
+  //       });
+  // }
 
   Widget showweddingList() {
     if (_weddingList.length > 0) {
