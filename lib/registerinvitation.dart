@@ -158,7 +158,6 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return ListView(

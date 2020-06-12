@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_wedding/page2.dart';
-import 'page1.dart';
 import 'registerwedding.dart';
 import 'registerinvitation.dart';
 
