@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:go_wedding/models/wedding.dart';
+import 'package:random_string/random_string.dart';
 import 'dart:async';
 
 
@@ -66,7 +67,7 @@ class _WeddingPageState extends State<WeddingPage> {
   }
 
   addNewwedding(String owner, String date, String hour, String location) {
-    Wedding wedding = new Wedding(owner, date, hour, location, DateTime.now().toString());
+    Wedding wedding = new Wedding(randomAlphaNumeric(20), owner, date, hour, location, DateTime.now().toString());
     _database.reference().child("Weddings").push().set(wedding.toJson());
   }
 

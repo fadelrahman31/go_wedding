@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  random_string: ^2.0.1
   firebase_database: ^3.1.6
   flutter:
     sdk: flutter
