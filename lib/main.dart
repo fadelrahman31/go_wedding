@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_wedding/page2.dart';
-import 'page1.dart';
 import 'registerwedding.dart';
+import 'registerinvitation.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,17 +36,17 @@ class _BottomNavigationBarState extends State<MyHomePage> {
        child: WeddingPage(),
      ),
      Center(
-       child: PageTwo(),
+       child: RegisterInvitation(),
      )
    ];
 
    final _kBottomNavbarItem = <BottomNavigationBarItem>[
      BottomNavigationBarItem(
-         title: Text('Page 1'),
+         title: Text('Weddings'),
          icon: Icon(Icons.apps)
      ),
      BottomNavigationBarItem(
-         title: Text('Page 2'),
+         title: Text('Invitation'),
          icon: Icon(Icons.supervised_user_circle)
      ),
    ];

@@ -18,7 +18,9 @@ environment:
 
 dependencies:
   random_string: ^2.0.1
+  excel:
   firebase_database: ^3.1.6
+  file_picker: ^1.10.0
   flutter:
     sdk: flutter
 

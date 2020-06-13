@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:go_wedding/models/wedding.dart';
 import 'package:random_string/random_string.dart';
 import 'dart:async';
+import 'weddingPage.dart';
 
 
 class WeddingPage extends StatefulWidget {
@@ -134,7 +136,7 @@ showAddweddingDialog(BuildContext context) async {
               new FlatButton(
                   child: const Text('Save'),
                   onPressed: () {
-                    addNewwedding(_ownerInputController.text.toString(), _locationInputController.text.toString(), _dateInputController.text.toString(), _hourInputController.text.toString());
+                    addNewwedding(_ownerInputController.text.toString(), _dateInputController.text.toString(), _hourInputController.text.toString(), _locationInputController.text.toString());
                     Navigator.pop(context);
                   })
             ],
@@ -203,6 +205,24 @@ showAddweddingDialog(BuildContext context) async {
   //       });
   // }
 
+  Widget homePage(){
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
+          child: Text("Hi, manage all of your events here!",
+            style: TextStyle(fontSize: 25
+                , fontWeight: FontWeight.bold),),
+        ),
+        Divider(),
+        Expanded(
+          child: showweddingList(),
+        ),
+      ],
+    );
+  }
+
+
   Widget showweddingList() {
     if (_weddingList.length > 0) {
       return ListView.builder(
@@ -210,22 +230,75 @@ showAddweddingDialog(BuildContext context) async {
           itemCount: _weddingList.length,
           itemBuilder: (BuildContext context, int index) {
             String id = _weddingList[index].id;
+            String weddingID = _weddingList[index].weddingID;
             String owner = _weddingList[index].owner;
             String date = _weddingList[index].date;
             String location = _weddingList[index].location;
             String created_at = _weddingList[index].createdat;
+            String ketLocation = "Lokasi: " + location;
+            String ketDate = "Waktu: " + date;
             return Dismissible(
               key: Key(id),
               background: Container(color: Colors.red),
               onDismissed: (direction) async {
                 deletewedding(id, index);
               },
-              child: ListTile(
-                title: Text(
-                  owner ?? 'default value',
-                  style: TextStyle(fontSize: 20.0),
+              child: Card(
+                elevation: 10.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(20.0)
                 ),
-              ),
+                margin: EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      contentPadding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      title: Text(owner ?? "default value", style: TextStyle(fontWeight: FontWeight.bold),),
+                      subtitle: Text(ketDate ?? "null value"),
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        ButtonBar(
+                          children: <Widget>[
+                            FlatButton(
+                              child: Text(ketLocation, style: TextStyle(fontWeight: FontWeight.bold),),
+                            )
+                          ],
+                        ),
+                        ButtonBar(
+                          children: <Widget>[
+                            RaisedButton(
+                              color: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(15.0)
+                              ),
+                              child: const Text("Details"),
+                              onPressed: () {
+                                print(id);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => WeddingDetailsPage(weddingID))
+                                );
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+//              child: ListTile(
+//                title: Text(
+//                  owner ?? 'default value',
+//                  style: TextStyle(fontSize: 20.0),
+//                ),
+//              ),
             );
           });
     } else {
@@ -241,7 +314,9 @@ showAddweddingDialog(BuildContext context) async {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        body: showweddingList(),
+        resizeToAvoidBottomPadding: false,
+        //body: showweddingList(),
+        body: homePage(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showAddweddingDialog(context);
