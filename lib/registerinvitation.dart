@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:file_picker/file_picker.dart';
 import 'models/invitation.dart';
+import 'package:random_string/random_string.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -65,7 +66,7 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
   }
 
   addNewInvitation(String namaTamu){
-    Invitation invitation = new Invitation("wedding01", namaTamu, "~otw", "link-to-qr");
+    Invitation invitation = new Invitation(randomAlphaNumeric(20),"wedding01", namaTamu, "~otw", "link-to-qr");
     _database.reference().child("Invitations").push().set(invitation.toJson());
   }
 

@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:go_wedding/models/wedding.dart';
+import 'package:random_string/random_string.dart';
 import 'dart:async';
+import 'weddingPage.dart';
 
 
 class WeddingPage extends StatefulWidget {
@@ -67,7 +69,7 @@ class _WeddingPageState extends State<WeddingPage> {
   }
 
   addNewwedding(String owner, String date, String hour, String location) {
-    Wedding wedding = new Wedding(owner, date, hour, location, DateTime.now().toString());
+    Wedding wedding = new Wedding(randomAlphaNumeric(20), owner, date, hour, location, DateTime.now().toString());
     _database.reference().child("Weddings").push().set(wedding.toJson());
   }
 
@@ -213,10 +215,13 @@ showAddweddingDialog(BuildContext context) async {
                 , fontWeight: FontWeight.bold),),
         ),
         Divider(),
-        showweddingList()
+        Expanded(
+          child: showweddingList(),
+        ),
       ],
     );
   }
+
 
   Widget showweddingList() {
     if (_weddingList.length > 0) {
@@ -225,6 +230,7 @@ showAddweddingDialog(BuildContext context) async {
           itemCount: _weddingList.length,
           itemBuilder: (BuildContext context, int index) {
             String id = _weddingList[index].id;
+            String weddingID = _weddingList[index].weddingID;
             String owner = _weddingList[index].owner;
             String date = _weddingList[index].date;
             String location = _weddingList[index].location;
@@ -272,7 +278,13 @@ showAddweddingDialog(BuildContext context) async {
                                 borderRadius: new BorderRadius.circular(15.0)
                               ),
                               child: const Text("Details"),
-                              onPressed: () {/*...*/},
+                              onPressed: () {
+                                print(id);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => WeddingDetailsPage(weddingID))
+                                );
+                              },
                             )
                           ],
                         )
@@ -302,6 +314,8 @@ showAddweddingDialog(BuildContext context) async {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+        resizeToAvoidBottomPadding: false,
+        //body: showweddingList(),
         body: homePage(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {

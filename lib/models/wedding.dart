@@ -2,23 +2,26 @@ import 'package:firebase_database/firebase_database.dart';
 
 class Wedding {
   String _id;
+  String _weddingID;
   String _owner;
   String _date;
   String _location;
   String _hour;
   String _created_at;
 
-  Wedding(this._owner, this._date, this._hour, this._location, this._created_at);
+  Wedding(this._weddingID, this._owner, this._date, this._hour, this._location, this._created_at);
  
   Wedding.map(dynamic obj) {
     this._owner = obj['owner'];
     this._date = obj['date'];
+    this._weddingID = obj['weddingID'];
     this._hour = obj['hour'];
     this._location = obj['location'];
     this._created_at = obj['created_at'];
   }
  
   String get id => _id;
+  String get weddingID => _weddingID;
   String get owner => _owner;
   String get date => _date;
   String get hour => _hour;
@@ -27,6 +30,7 @@ class Wedding {
  
   Wedding.fromSnapshot(DataSnapshot snapshot) {
     _id = snapshot.key;
+    _weddingID = snapshot.value['weddingID'];
     _owner = snapshot.value['owner'];
     _date = snapshot.value['date'];
     _hour = snapshot.value['hour'];
@@ -37,6 +41,7 @@ class Wedding {
   toJson() {
     return {
       "owner": owner,
+      "weddingID": weddingID,
       "date": date,
       "hour": hour,
       "location": location,
