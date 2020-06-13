@@ -127,37 +127,37 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
     return text;
   }
 
-  Widget showInvitationList() {
-    if (_invitationList.length > 0) {
-      return ListView.builder(
-          shrinkWrap: true,
-          itemCount: _invitationList.length,
-          itemBuilder: (BuildContext context, int index) {
-              String id = _invitationList[index].id;
-              String name = _invitationList[index].name;
-            return Dismissible(
-              key: Key(id),
-              background: Container(color: Colors.red),
-              onDismissed: (direction) async {
-                deleteInvitation(id, index);
-              },
-              child: ListTile(
-                title: Text(
-                  name ?? 'default value' ,
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-            );
-          });
-    } else {
-      return Center(
-          child: Text(
-            "Welcome. Your list is empty",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30.0),
-          ));
-    }
-  }
+//  Widget showInvitationList() {
+//    if (_invitationList.length > 0) {
+//      return ListView.builder(
+//          shrinkWrap: true,
+//          itemCount: _invitationList.length,
+//          itemBuilder: (BuildContext context, int index) {
+//              String id = _invitationList[index].id;
+//              String name = _invitationList[index].name;
+//            return Dismissible(
+//              key: Key(id),
+//              background: Container(color: Colors.red),
+//              onDismissed: (direction) async {
+//                deleteInvitation(id, index);
+//              },
+//              child: ListTile(
+//                title: Text(
+//                  name ?? 'default value' ,
+//                  style: TextStyle(fontSize: 20.0),
+//                ),
+//              ),
+//            );
+//          });
+//    } else {
+//      return Center(
+//          child: Text(
+//            "Welcome. Your list is empty",
+//            textAlign: TextAlign.center,
+//            style: TextStyle(fontSize: 30.0),
+//          ));
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +187,7 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
           },
         ),
         Divider(),
-        showInvitationList()
+        //showInvitationList()
       ],
     );
   }
