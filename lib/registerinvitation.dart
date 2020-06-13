@@ -8,6 +8,7 @@ import 'models/invitation.dart';
 import 'package:random_string/random_string.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:excel/excel.dart';
 
 class RegisterInvitation extends StatefulWidget {
   RegisterInvitation({Key key}) : super(key: key);
@@ -96,8 +97,9 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
     });
     print(_fileName);
     print(_filePath);
-    _content = await read();
-    parseData(_content);
+    //_content = await read();
+    //parseData(_content);
+    readExcel();
   }
 
   void parseData(String content){
@@ -125,6 +127,18 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
       print("couldn't read file");
     }
     return text;
+  }
+
+  void readExcel(){
+    var bytes = File(_filePath.toString()).readAsBytesSync();
+    var excel = Excel.decodeBytes(bytes, update: true);
+
+    for(var table in excel.tables.keys) {
+      for (var row in excel.tables[table].rows) {
+        var a = row.toString().replaceAll(new RegExp(r"[^\s\w]"), '');
+        print(a);
+      }
+    }
   }
 
 //  Widget showInvitationList() {
@@ -180,10 +194,11 @@ class _RegisterInvitationState extends State<RegisterInvitation> {
         ),
         Divider(),
         RaisedButton(
-          child: Text("Import Invited Guest JSON File", style: TextStyle(color: Colors.white),),
+          child: Text("Test Read XLSX", style: TextStyle(color: Colors.white),),
           color: Colors.green,
           onPressed: (){
             openFileExplorer();
+            //readExcel();
           },
         ),
         Divider(),

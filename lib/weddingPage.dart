@@ -8,6 +8,7 @@ import 'models/invitation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'dart:convert';
+import 'package:excel/excel.dart';
 
 class WeddingDetailsPage extends StatefulWidget {
   final String requiredID;
@@ -121,36 +122,50 @@ class _WeddingDetailsPageState extends State<WeddingDetailsPage> {
     });
     print(_fileName);
     print(_filePath);
-    _content = await read();
-    parseData(_content);
+//    _content = await read();
+//    parseData(_content);
+    readExcel();
   }
 
-  void parseData(String content){
-    var data = json.decode(content);
-    var tamu = data["tamu"] as List;
-    print(tamu.runtimeType);
-    print(tamu);
-    for(var i=0; i < tamu.length; i++){
-      _daftarTamu.add(tamu[i]["nama"].toString());
-    }
-    print(_daftarTamu.runtimeType);
-    //print(_daftarTamu);
-    for(var j=0; j<_daftarTamu.length;j++){
-      print("iterasi " + j.toString() + " " + _daftarTamu[j] + "\n");
-      addNewInvitation(_daftarTamu[j]);
+  void readExcel(){
+    var bytes = File(_filePath.toString()).readAsBytesSync();
+    var excel = Excel.decodeBytes(bytes, update: true);
+
+    for(var table in excel.tables.keys) {
+      for (var row in excel.tables[table].rows) {
+        var a = row.toString().replaceAll(new RegExp(r"[^\s\w]"), '');
+        print(a);
+        addNewInvitation(a);
+      }
     }
   }
 
-  Future<String> read() async {
-    String text;
-    try{
-      final File file = File(_filePath.toString());
-      text = await file.readAsString();
-    }catch (e){
-      print("couldn't read file");
-    }
-    return text;
-  }
+//  void parseData(String content){
+//    var data = json.decode(content);
+//    var tamu = data["tamu"] as List;
+//    print(tamu.runtimeType);
+//    print(tamu);
+//    for(var i=0; i < tamu.length; i++){
+//      _daftarTamu.add(tamu[i]["nama"].toString());
+//    }
+//    print(_daftarTamu.runtimeType);
+//    //print(_daftarTamu);
+//    for(var j=0; j<_daftarTamu.length;j++){
+//      print("iterasi " + j.toString() + " " + _daftarTamu[j] + "\n");
+//      addNewInvitation(_daftarTamu[j]);
+//    }
+//  }
+//
+//  Future<String> read() async {
+//    String text;
+//    try{
+//      final File file = File(_filePath.toString());
+//      text = await file.readAsString();
+//    }catch (e){
+//      print("couldn't read file");
+//    }
+//    return text;
+//  }
 
 
 
@@ -194,7 +209,7 @@ class _WeddingDetailsPageState extends State<WeddingDetailsPage> {
         ButtonTheme(
           minWidth: MediaQuery.of(context).size.width - (0.25 * MediaQuery.of(context).size.width),
           child: RaisedButton(
-            child: Text("Import Invited Guest JSON File", style: TextStyle(color: Colors.white)),
+            child: Text("Import Invited Guest XLSX File", style: TextStyle(color: Colors.white)),
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(25.0)
             ),

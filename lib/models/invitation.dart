@@ -38,6 +38,7 @@ class Invitation {
   toJson() {
     return {
       "id": id,
+      "invitationID":invitationID,
       "id_wedding": idwedding,
       "name": name,
       "additional":additional,
